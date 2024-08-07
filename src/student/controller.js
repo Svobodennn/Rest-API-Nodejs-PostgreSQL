@@ -35,8 +35,28 @@ const addStudent = (req, res) => {
 
 }
 
+const removeStudent = (req, res) =>{
+    const id = parseInt(req.params.id);
+
+    db.query(queries.getStudentById, [id], (err, results) => {
+        if(!results.length) {
+            res.send('User not found');
+        }
+        else {
+            db.query(queries.removeStudent, [id], (err, results) => {
+                if(err) throw err;
+                res.status(201).send('Student succesfully removed');
+            });
+        }
+    })
+
+
+   
+}
+
 module.exports = {
     getStudents,
     getStudentById,
     addStudent,
+    removeStudent,
 };
