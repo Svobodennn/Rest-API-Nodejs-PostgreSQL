@@ -23,12 +23,14 @@ const addStudent = (req, res) => {
         if(results.length) {
             res.send('Email already exists');
         }
+        else {
+            // Add student
+            db.query(queries.addStudent, [name, email, age, dob], (err, results) => {
+                if(err) throw err;
+                res.status(201).send('Student succesfully added');
+            });
+        }
         
-        // Add student
-        db.query(queries.addStudent, [name, email, age, dob], (err, results) => {
-            if(err) throw err;
-            res.status(201).send('Student succesfully added');
-        });
     });
 
 }
