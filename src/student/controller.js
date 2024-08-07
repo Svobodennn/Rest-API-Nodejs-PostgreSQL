@@ -15,8 +15,26 @@ const getStudentById = (req, res) => {
         res.status(200).json(results);
     });
 }
+const addStudent = (req, res) => {
+    const {name, email, age, dob} = req.body;
+
+    // check if email exists
+    db.query(queries.checkEmailExists, [email], (err, results) => {
+        if(results.length) {
+            res.send('Email already exists');
+        }
+        
+        // Add student
+        db.query(queries.addStudent, [name, email, age, dob], (err, results) => {
+            if(err) throw err;
+            res.status(201).send('Student succesfully added');
+        });
+    });
+
+}
 
 module.exports = {
     getStudents,
     getStudentById,
+    addStudent,
 };
