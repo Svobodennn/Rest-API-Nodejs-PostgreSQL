@@ -49,9 +49,22 @@ const removeStudent = (req, res) =>{
             });
         }
     })
+}
+const updateStudent = (req, res) =>{
+    const id = parseInt(req.params.id);
+    const { name } = req.body;
 
-
-   
+    db.query(queries.getStudentById, [id], (err, results) => {
+        if(!results.length) {
+            res.send('User not found');
+        }
+        else {
+            db.query(queries.updateStudent, [name, id], (err, results) => {
+                if(err) throw err;
+                res.status(201).send('Student succesfully updated');
+            });
+        }
+    })
 }
 
 module.exports = {
@@ -59,4 +72,5 @@ module.exports = {
     getStudentById,
     addStudent,
     removeStudent,
+    updateStudent,
 };
